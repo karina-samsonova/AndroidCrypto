@@ -20,5 +20,11 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "AndroidCrypto"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
- 
+include(":features")
+include(":features:rsa")
+include(":design-system")
+include(":features:aes")
+include(":features:ecc")
+include(":features:aes-rsa")
