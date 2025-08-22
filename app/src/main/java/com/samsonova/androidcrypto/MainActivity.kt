@@ -8,7 +8,6 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
@@ -38,7 +37,6 @@ import com.samsonova.androidcrypto.ui.theme.AndroidCryptoTheme
 import com.samsonova.ecc.EccPage
 import com.samsonova.rsa.RsaPage
 import java.security.KeyStore
-import java.util.Arrays
 import java.util.concurrent.Executor
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
@@ -102,6 +100,19 @@ class MainActivity : FragmentActivity() {
             .setNegativeButtonText("Use account password")
             .build()
 
+        if (checkBiometricsAvailability()) {
+            startBiometricAuthentification()
+        }
+
+        enableEdgeToEdge()
+        setContent {
+            AndroidCryptoTheme {
+                CryptoHorizontalPager()
+            }
+        }
+    }
+
+    private fun startBiometricAuthentification() {
         generateSecretKey(
             KeyGenParameterSpec.Builder(
                 KEY_NAME,
@@ -118,15 +129,7 @@ class MainActivity : FragmentActivity() {
         val secretKey = getSecretKey()
         cipher.init(Cipher.ENCRYPT_MODE, secretKey)
 
-        if (checkBiometricsAvailability())
-            biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
-
-        enableEdgeToEdge()
-        setContent {
-            AndroidCryptoTheme {
-                CryptoHorizontalPager()
-            }
-        }
+        biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
     }
 
     private fun generateSecretKey(keyGenParameterSpec: KeyGenParameterSpec) {
