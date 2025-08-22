@@ -186,7 +186,7 @@ class MainActivity : FragmentActivity() {
 
 @Composable
 private fun CryptoHorizontalPager() {
-    val pageCount = 5
+    val pageCount = 4
     val pagerState = rememberPagerState(pageCount = { pageCount })
 
     Column(
